@@ -1,14 +1,20 @@
-FROM node:18.9.1//node image
+# Use Node.js 18.9.1 as the base image
+FROM node:18.9.1
 
-WORKDIR /app //specifying the directory in which all the dependencies and library should be installed in docker container
+# Set the working directory inside the container
+WORKDIR /app  
 
-COPY package.json . //copying the package.json into the /app because it contains info about all the dependencies which should be installed
+# Copy package.json to the working directory
+COPY package.json .  
 
-RUN npm install // to install dependenies 
+# Install dependencies
+RUN npm install  
 
-COPY . . // copy the entire backend code into app
+# Copy the entire backend code into the working directory
+COPY . .  
 
-EXPOSE 5050 //expose  the port so that we can bind with the host port
+# Expose port 5050 to allow external access
+EXPOSE 5050  
 
-CMD ["npm", "start"] // commands to start the backend
-
+# Command to start the backend
+CMD ["npm", "start"]
