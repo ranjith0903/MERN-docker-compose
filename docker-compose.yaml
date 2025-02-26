@@ -1,38 +1,37 @@
 services:
   backend:
-    build: ./mern/backend
+    build: ./mern/backend  # Specifies the location of the Dockerfile for the backend service
     ports:
-      - "5050:5050" 
+      - "5050:5050"  # Maps port 5050 on the host to port 5050 inside the container
     networks:
-      - mern_network
+      - mern_network  # Specifies the network the backend service should use
     environment:
-      MONGO_URI: mongodb://mongo:27017/mydatabase  
+      MONGO_URI: mongodb://mongo:27017/mydatabase  # Connection string for MongoDB
     depends_on:
-      - mongodb
+      - mongodb  # Ensures MongoDB starts before the backend service
 
   frontend:
-    build: ./mern/frontend
+    build: ./mern/frontend  # Specifies the location of the Dockerfile for the frontend service
     ports:
-      - "5173:5173"  
+      - "5173:5173"  # Maps port 5173 on the host to port 5173 inside the container
     networks:
-      - mern_network
+      - mern_network  # Specifies the network the frontend service should use
     environment:
-      REACT_APP_API_URL: http://backend:5050 
+      REACT_APP_API_URL: http://backend:5050  # URL for the backend service inside the Docker network
 
   mongodb:
-    image: mongo:latest  
+    image: mongo:latest  # Uses the latest MongoDB image from Docker Hub
     ports:
-      - "27017:27017"  
+      - "27017:27017"  # Maps port 27017 on the host to port 27017 inside the container
     networks:
-      - mern_network
+      - mern_network  # Specifies the network the MongoDB service should use
     volumes:
-      - mongo-data:/data/db  
+      - mongo-data:/data/db  # Mounts a volume to persist MongoDB data
 
 networks:
   mern_network:
-    driver: bridge 
+    driver: bridge  # Creates a bridge network for inter-container communication
 
 volumes:
   mongo-data:
-    driver: local  # Persist MongoDB data locally
-
+    driver: local  # Defines a persistent local volume for MongoDB data storage
